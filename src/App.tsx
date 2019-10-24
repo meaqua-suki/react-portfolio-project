@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 // import logo from './logo.svg';
 import './App.css';
 // import Homepage from './homepage.component'
-import {HomePage} from './components/HomePage/Homepage.component'
+import {HomePage} from './pages/HomePage/Homepage.component'
 
 class App extends Component {
   constructor(props:object) {
