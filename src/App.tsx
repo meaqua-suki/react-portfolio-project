@@ -2,19 +2,32 @@ import React,{Component} from 'react';
 // import logo from './logo.svg';
 import './App.css';
 // import Homepage from './homepage.component'
-import {HomePage} from './pages/HomePage/Homepage.component'
-
+import {HomePage} from './pages/HomePage/Homepage.component';
+import {HatsPage} from './pages/HatsPage/HatsPage.component';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 class App extends Component {
   constructor(props:object) {
     super(props);
   }
   render() {
-    return (
+    return (<Router>
       <div className="App">
-        {/* <p>react!</p> */}
-        {/* <Homepage/> */}
-        <HomePage/>
+        <Switch>
+          <Route exact={true} path="/">
+            <HomePage/>
+          </Route>
+          <Route path="/shop/hats">
+            <HatsPage/>
+          </Route>
+        </Switch>
+        
       </div>
+      </Router>
     )
   }
 }

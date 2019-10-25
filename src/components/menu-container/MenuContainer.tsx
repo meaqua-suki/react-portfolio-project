@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuItem } from '../menu-item/MenuItem';
+import  MenuItem  from '../menu-item/MenuItem';
 import './MenuContainer.scss';
 import sections from './Container.data.js';
 // export const MenuContainer = () => (
@@ -12,10 +12,10 @@ import sections from './Container.data.js';
 
 
 
-interface Containerprops {
+type Containerprops = {
 
 }
-interface ContainerState {
+type ContainerState = {
   sections:{
     title: string;
     imageUrl: string;
@@ -25,7 +25,7 @@ interface ContainerState {
   }[]
 }
 export default class MenuContainer extends React.Component<Containerprops,ContainerState> {
-  constructor(props:object) {
+  constructor(props:Containerprops) {
     super(props);
     this.state = {
       sections
@@ -35,8 +35,14 @@ export default class MenuContainer extends React.Component<Containerprops,Contai
     return (
       <div className="menu-container">
         {
-          this.state.sections.map(({title,id,imageUrl,size}) => {
-            return <MenuItem title={title} key={id} subtitle="shitHole" imageUrl={imageUrl} size={size}/>
+          this.state.sections.map(({id,title,imageUrl,linkUrl,size}) => {
+            return <MenuItem 
+              key={id} 
+              title={title}
+              imageUrl={imageUrl}
+              linkUrl={linkUrl}
+              size={size}
+            />
           })
         }
       </div>
