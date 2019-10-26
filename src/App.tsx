@@ -4,30 +4,31 @@ import './App.css';
 // import Homepage from './homepage.component'
 import {HomePage} from './pages/HomePage/Homepage.component';
 import {HatsPage} from './pages/HatsPage/HatsPage.component';
+import {ShopPage} from './pages/Shoppage/shop.component';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
+import {Header} from './components/header/header.component';
+
 class App extends Component {
   constructor(props:object) {
     super(props);
   }
   render() {
-    return (<Router>
-      <div className="App">
-        <Switch>
-          <Route exact={true} path="/">
-            <HomePage/>
-          </Route>
-          <Route path="/shop/hats">
-            <HatsPage/>
-          </Route>
-        </Switch>
-        
-      </div>
-      </Router>
+    return (
+      <div className="App">        
+        <Router>
+          <Header/>
+          <Switch>
+            <Route exact={true} path="/" component={HomePage}/>
+            <Route path='/shop' exact={true} component={ShopPage}/>
+            <Route path="/shop/hats" component={HatsPage} />  
+          </Switch>
+        </Router>
+      </div>      
     )
   }
 }
