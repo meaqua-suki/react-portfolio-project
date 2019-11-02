@@ -5,6 +5,7 @@ import './App.css';
 import {HomePage} from './pages/HomePage/Homepage.component';
 import {HatsPage} from './pages/HatsPage/HatsPage.component';
 import {ShopPage} from './pages/Shoppage/shop.component';
+import {SignInAndSignupPage} from './pages/sign-in-and-sign-up/sign-in-and-sign-up';
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,19 +14,55 @@ import {
 } from "react-router-dom";
 import {Header} from './components/header/header.component';
 
-class App extends Component {
+import {auth} from './firebase/firebase.utils';
+
+interface AppProps {
+
+}
+
+interface Appstate {
+  currentUser?:null | object
+}
+
+
+class App extends Component<AppProps,Appstate> { 
   constructor(props:object) {
     super(props);
+    
+    this.state = {
+      currentUser: null
+    }
+
   }
+
+  unsubscribeFromAuth:any = null;
+
+  componentDidMount() {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({currentUser:user})
+      }
+      else {
+        this.setState({currentUser:null})
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+  
+
   render() {
     return (
       <div className="App">        
         <Router>
-          <Header/>
+          <Header currentUser={this.state.currentUser}/>
           <Switch>
             <Route exact={true} path="/" component={HomePage}/>
             <Route path='/shop' exact={true} component={ShopPage}/>
-            <Route path="/shop/hats" component={HatsPage} />  
+            <Route path="/shop/hats" component={HatsPage} />
+            <Route path='/signin' component={SignInAndSignupPage}/>  
           </Switch>
         </Router>
       </div>      
