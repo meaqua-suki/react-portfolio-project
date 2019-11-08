@@ -7,7 +7,7 @@ interface customButtonProps {
   children?:any;
   type?:any;
   className?:string;
-  isGoogleSignin:boolean;
+  isGoogleSignin?:boolean;
 }
 
 export const CustomButton:React.FC<customButtonProps> = ({children,isGoogleSignin,...otherprops}) => (

@@ -13,51 +13,55 @@ import {
   Link
 } from "react-router-dom";
 import {Header} from './components/header/header.component';
+import {connect, DispatchProp} from 'react-redux';
+import {auth, createUserProfileDocument} from './firebase/firebase.utils';
+import { Dispatch } from 'redux';
+import {setCurrentUser} from './redux/user/user.actions-creator';
+import {UserState} from './redux/Statetypes/UserState'
+import { User } from 'firebase';
 
-import {auth} from './firebase/firebase.utils';
-
-interface AppProps {
+interface AppMapStateToProps {
 
 }
 
-interface Appstate {
-  currentUser?:null | object
-}
-
-
-class App extends Component<AppProps,Appstate> { 
-  constructor(props:object) {
-    super(props);
-    
-    this.state = {
-      currentUser: null
-    }
-
+interface AppMapDispatchToProps {
+  setCurrentUser:(user:any) => {
+    type:string,
+    payload:User
   }
+}
 
+type AppProps = AppMapStateToProps & AppMapDispatchToProps;
+
+
+
+class App extends Component<AppProps,any> {   
   unsubscribeFromAuth:any = null;
-
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      if (user) {
-        this.setState({currentUser:user})
+    const {setCurrentUser} = this.props      
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {    
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        userRef.onSnapshot((snapShot) => {         
+          setCurrentUser({
+            id:snapShot.id,
+            ...snapShot.data()
+          })
+        });        
       }
-      else {
-        this.setState({currentUser:null})
-      }
+      else {        
+        setCurrentUser(userAuth)
+      }              
     })
   }
-
   componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
-  
-
   render() {
     return (
       <div className="App">        
         <Router>
-          <Header currentUser={this.state.currentUser}/>
+          <Header/>
           <Switch>
             <Route exact={true} path="/" component={HomePage}/>
             <Route path='/shop' exact={true} component={ShopPage}/>
@@ -70,25 +74,10 @@ class App extends Component<AppProps,Appstate> {
   }
 }
 
-// const App: React.FC = () => {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+const mapDispatchToProps = (dispatch:Dispatch) => (
+  {
+    setCurrentUser:(user:User) => dispatch(setCurrentUser(user))
+  }
+)
 
-export default App;
+export default connect(null,mapDispatchToProps)(App);

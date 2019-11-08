@@ -2,7 +2,7 @@ import React, { Component, FormEvent, ChangeEvent } from 'react';
 import './sign-in.styles.scss';
 import {FormInput} from '../../components/form-input/form-input.component';
 import {CustomButton} from '../../components/custom-button/custom-button.components'
-import {signInwithGoogle} from '../../firebase/firebase.utils.js';
+import {signInwithGoogle,auth} from '../../firebase/firebase.utils.js';
 
 interface SignInProps {
 
@@ -21,12 +21,19 @@ export class SignIn extends Component<SignInProps,SignInState> {
     }
   }
 
-  handleSubmit = (e:FormEvent<HTMLFormElement>) => {
-    e.preventDefault();    
-    this.setState({
-      email:'',
-      password:''
-    })
+  handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const {email,password} = this.state;
+    try {
+      await auth.signInWithEmailAndPassword(email,password);
+      this.setState({
+        email:'',
+        password:''
+      })      
+    } catch (error) {
+      console.log(error)
+    }    
+
   }
 
   handleChange =(e:FormEvent<HTMLInputElement>) => {

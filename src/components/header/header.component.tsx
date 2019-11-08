@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, ReducerState } from 'react';
 import './header.styles.scss'; 
 import {Link} from 'react-router-dom';
 import {ReactComponent as Logo} from '../../assets/4.4 crown.svg.svg';
 import {auth} from '../../firebase/firebase.utils';
-
+import {connect} from 'react-redux'
+import { Store, Reducer } from 'redux';
+import {UserState} from '../../redux/Statetypes/UserState';
+import {RootReducerState} from '../../redux/Statetypes/RootReducerState'
 
 interface HeaderProps {
-  currentUser?:object | null
+  currentUser?:object | null;  
 }
 
-
-export const Header:React.FC<HeaderProps> = ({currentUser}) => (
+const header:React.FC<HeaderProps> = ({currentUser}) => (
   <div className="header">
     <Link to='/' className="logo-container">
       <Logo className="logo"/>
@@ -41,3 +43,9 @@ export const Header:React.FC<HeaderProps> = ({currentUser}) => (
     </div>
   </div>
 )
+ 
+const mapStateToProps = (state:RootReducerState,ownProps:object) => ({
+  currentUser:state.user.currentUser
+})
+
+export const Header = connect(mapStateToProps)(header)
