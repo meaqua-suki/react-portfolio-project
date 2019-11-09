@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
-// import logo from './logo.svg';
+
 import './App.css';
-// import Homepage from './homepage.component'
+
 import {HomePage} from './pages/HomePage/Homepage.component';
 import {HatsPage} from './pages/HatsPage/HatsPage.component';
 import {ShopPage} from './pages/Shoppage/shop.component';
@@ -10,7 +10,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
 import {Header} from './components/header/header.component';
 import {connect, DispatchProp} from 'react-redux';
@@ -19,9 +20,10 @@ import { Dispatch } from 'redux';
 import {setCurrentUser} from './redux/user/user.actions-creator';
 import {UserState} from './redux/Statetypes/UserState'
 import { User } from 'firebase';
+import { RootReducerState } from './redux/Statetypes/RootReducerState';
 
 interface AppMapStateToProps {
-
+  currentUser:User | object |null
 }
 
 interface AppMapDispatchToProps {
@@ -66,7 +68,13 @@ class App extends Component<AppProps,any> {
             <Route exact={true} path="/" component={HomePage}/>
             <Route path='/shop' exact={true} component={ShopPage}/>
             <Route path="/shop/hats" component={HatsPage} />
-            <Route path='/signin' component={SignInAndSignupPage}/>  
+            <Route 
+              exact={true}
+              path='/signin'
+              render={
+                () => this.props.currentUser ? (<Redirect to='/'/>) : (<SignInAndSignupPage/>)
+            }
+            />  
           </Switch>
         </Router>
       </div>      
@@ -74,10 +82,14 @@ class App extends Component<AppProps,any> {
   }
 }
 
+const mapStatetoProps = ({user}:{user:UserState}) => ({
+  currentUser:user.currentUser
+})
+
 const mapDispatchToProps = (dispatch:Dispatch) => (
   {
     setCurrentUser:(user:User) => dispatch(setCurrentUser(user))
   }
 )
 
-export default connect(null,mapDispatchToProps)(App);
+export default connect(mapStatetoProps,mapDispatchToProps)(App);
