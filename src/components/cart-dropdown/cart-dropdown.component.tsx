@@ -5,6 +5,7 @@ import { cartProps } from '../../redux/cart/cart-interfaces';
 import { connect } from 'react-redux';
 import {RootReducerState} from '../../redux/Statetypes/RootReducerState'
 import { Cart_Item } from '../cartItem/cart-item';
+import {selectCartItems} from '../../redux/cart/cart.selectors';
 
 const cart:React.FC<cartProps> = ({cartItems}) => (    
   <div className="cart-dropdown">
@@ -21,9 +22,9 @@ const cart:React.FC<cartProps> = ({cartItems}) => (
   </div>     
 )
 
-const mapStateToProps = ({cart:{cartItems}}:RootReducerState) => (
+const mapStateToProps = (state:RootReducerState) => (
   {
-    cartItems
+    cartItems:selectCartItems(state)
   }
 )
 

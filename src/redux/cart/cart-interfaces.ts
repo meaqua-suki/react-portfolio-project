@@ -24,6 +24,7 @@ export interface cartProps {
     price:number;
     quantity:number;
   }[]
+  itemCount?:number;
 }
 
 export interface CartItem {
