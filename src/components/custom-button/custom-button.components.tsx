@@ -8,11 +8,21 @@ interface customButtonProps {
   type?:any;
   className?:string;
   isGoogleSignin?:boolean;
+  inverted?:boolean
 }
 
-export const CustomButton:React.FC<customButtonProps> = ({children,isGoogleSignin,...otherprops}) => (
+export const CustomButton:React.FC<customButtonProps> = (
+  {
+    children,
+    isGoogleSignin,
+    inverted,
+    ...otherprops}) => (
   <button 
-    className={`${isGoogleSignin ? 'google-sign-in' : ''} custom-button`} 
+    className={
+      `${isGoogleSignin ? 'google-sign-in' : ''}
+       ${inverted ? 'inverted' : ''}
+       custom-button`
+    } 
     {...otherprops}
   >
     {children}           

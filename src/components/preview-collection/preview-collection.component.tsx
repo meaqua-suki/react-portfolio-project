@@ -20,9 +20,10 @@ export const PreviewCollection: React.FC<CollectionProps> = ({title,items}) => {
       <div className="preview">
         {
           items.filter((item,index) => (index < 4))
-          .map(({id,...otherItemProps}) => (<OneItem key={id} {...otherItemProps}/>))
+          .map((item) => (<OneItem key={item.id} item={item}/>))
         }
       </div>
     </div>
   )
 }
+

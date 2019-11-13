@@ -1,4 +1,4 @@
-import { Reducer } from "react";
+import { Reducer } from "redux";
 import {UserActionTypes} from './user.action-types';
 
 const {SET_CURRENT_USER} = UserActionTypes;
@@ -29,4 +29,4 @@ const userReducer:Reducer<UserState|undefined,UserAction> = (state = INITIAL_STA
     }
   }
 
-  export default userReducer;
+  export default userReducer; 

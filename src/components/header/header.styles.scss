@@ -1,10 +1,11 @@
 .header {
+  
   height: 70px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   margin-bottom: 25px;
-
+  position: relative;
   .logo-container {
     height: 100%;
     width: 70px;
@@ -20,7 +21,7 @@
 
     .option {
       padding: 10px 15px;
-      font-size: 1.2rem;
+      font-size: 1.7rem;
       cursor: pointer;
     }
   }
