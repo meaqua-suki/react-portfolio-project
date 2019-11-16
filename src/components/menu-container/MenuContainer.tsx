@@ -35,14 +35,13 @@ export default class MenuContainer extends React.Component<Containerprops,Contai
     return (
       <div className="menu-container">
         {
-          this.state.sections.map(({id,title,imageUrl,linkUrl,size}) => {
-            return <MenuItem 
-              key={id} 
-              title={title}
-              imageUrl={imageUrl}
-              linkUrl={linkUrl}
-              size={size}
-            />
+          this.state.sections.map(({id,...rest}) => {
+            return (
+              <MenuItem 
+                key={id}
+                {...rest}
+              />
+            )
           })
         }
       </div>

@@ -1,12 +1,12 @@
 import {createStore,applyMiddleware, Store} from 'redux';
 import logger from 'redux-logger';
-
-import {rootReducer} from '../root-reducer';
-
+import { persistStore, persistReducer } from 'redux-persist';
+import {persistedReducer} from '../root-reducer';
 
 const middlewares = [logger];
 
-export const store:Store = createStore(rootReducer,applyMiddleware(...middlewares));
+export const store:Store = createStore(persistedReducer,applyMiddleware(...middlewares));
 export const Entirestate = store.getState();
 
-console.log(Entirestate)
+export const persistor = persistStore(store);
+// console.log(Entirestate)

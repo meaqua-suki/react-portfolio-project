@@ -1,26 +1,37 @@
 import React,{Component} from 'react';
-
+import {currentUserSelector} from './redux/user/user.selectors'
 import './App.css';
+
 
 import {HomePage} from './pages/HomePage/Homepage.component';
 import {HatsPage} from './pages/HatsPage/HatsPage.component';
 import {ShopPage} from './pages/Shoppage/shop.component';
 import {SignInAndSignupPage} from './pages/sign-in-and-sign-up/sign-in-and-sign-up';
+import {CheckoutPage} from './pages/CheckoutPage/checkoutPage'
+
+
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   Redirect
 } from "react-router-dom";
-import {Header} from './components/header/header.component';
-import {connect, DispatchProp} from 'react-redux';
-import {auth, createUserProfileDocument} from './firebase/firebase.utils';
-import { Dispatch } from 'redux';
-import {setCurrentUser} from './redux/user/user.actions-creator';
-import {UserState} from './redux/Statetypes/UserState'
+
+
 import { User } from 'firebase';
+import {auth, createUserProfileDocument} from './firebase/firebase.utils';
+
+
+import {Header} from './components/header/header.component';
+
+
+import {connect} from 'react-redux';
+import { Dispatch } from 'redux';
+
+
+import {setCurrentUser} from './redux/user/user.actions-creator';
 import { RootReducerState } from './redux/Statetypes/RootReducerState';
+
 
 interface AppMapStateToProps {
   currentUser:User | object |null
@@ -73,8 +84,9 @@ class App extends Component<AppProps,any> {
               path='/signin'
               render={
                 () => this.props.currentUser ? (<Redirect to='/'/>) : (<SignInAndSignupPage/>)
-            }
-            />  
+            }            
+            />
+            <Route exact={true} path='/checkout' component={CheckoutPage}/>  
           </Switch>
         </Router>
       </div>      
@@ -82,8 +94,8 @@ class App extends Component<AppProps,any> {
   }
 }
 
-const mapStatetoProps = ({user}:{user:UserState}) => ({
-  currentUser:user.currentUser
+const mapStatetoProps = (state:RootReducerState) => ({
+  currentUser:currentUserSelector(state)
 })
 
 const mapDispatchToProps = (dispatch:Dispatch) => (
