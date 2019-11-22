@@ -13,7 +13,7 @@ interface OneItemProp {
     imageUrl: string,
     price: number
   }
-  addItem:any
+  addItem?:any
 }
 
 const oneItem:React.FC<OneItemProp> = ({item,addItem}) => {

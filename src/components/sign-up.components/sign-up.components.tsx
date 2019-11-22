@@ -92,7 +92,7 @@ export class SignUp extends Component<signUpprops,signUpState> {
           />
           <FormInput
             type="password"
-            name="confirmpassword"
+            name="confirmPassword"
             value={confirmPassword}
             handleChange={this.handleChange}
             required={true}

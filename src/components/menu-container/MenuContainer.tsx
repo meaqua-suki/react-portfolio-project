@@ -1,41 +1,17 @@
 import React from 'react';
 import  MenuItem  from '../menu-item/MenuItem';
 import './MenuContainer.scss';
-import sections from './Container.data.js';
-// export const MenuContainer = () => (
-//   <div className="menu-container">
-//     <MenuItem title="shitOne"/>
-//     <MenuItem title="shitHole"/>
-//     <MenuItem title="Motherfuckers"/>
-//   </div>
-// )
+import { connect, MapStateToProps } from 'react-redux';
+import { RootReducerState } from '../../redux/Statetypes/RootReducerState';
+import {sectionsSelector} from '../../redux/MenuContainer/MenuContainer.selectors'
+import { menuItems, menuContainerProps } from '../../redux/MenuContainer/menuContainerInterface';
 
 
-
-type Containerprops = {
-
-}
-type ContainerState = {
-  sections:{
-    title: string;
-    imageUrl: string;
-    id: number;
-    linkUrl: string;
-    size?: string;
-  }[]
-}
-export default class MenuContainer extends React.Component<Containerprops,ContainerState> {
-  constructor(props:Containerprops) {
-    super(props);
-    this.state = {
-      sections
-    };
-  }
-  render() {
+const menuContainer:React.FC<menuContainerProps> = ({sections}) => {   
     return (
       <div className="menu-container">
         {
-          this.state.sections.map(({id,...rest}) => {
+         sections.map(({id,...rest}) => {
             return (
               <MenuItem 
                 key={id}
@@ -45,6 +21,15 @@ export default class MenuContainer extends React.Component<Containerprops,Contai
           })
         }
       </div>
-    )
-  }
+    )  
 }
+
+const mapStateToProps:MapStateToProps<{sections:menuItems},any,RootReducerState> = (state:RootReducerState) => (
+  {
+    sections:sectionsSelector(state)
+  }
+)
+
+const MenuContainer = connect(mapStateToProps)(menuContainer);
+
+export default MenuContainer;

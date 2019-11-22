@@ -1,8 +1,6 @@
 import React,{Component} from 'react';
 import {currentUserSelector} from './redux/user/user.selectors'
 import './App.css';
-
-
 import {HomePage} from './pages/HomePage/Homepage.component';
 import {HatsPage} from './pages/HatsPage/HatsPage.component';
 import {ShopPage} from './pages/Shoppage/shop.component';
@@ -77,14 +75,14 @@ class App extends Component<AppProps,any> {
           <Header/>
           <Switch>
             <Route exact={true} path="/" component={HomePage}/>
-            <Route path='/shop' exact={true} component={ShopPage}/>
-            <Route path="/shop/hats" component={HatsPage} />
+            <Route path='/shop' component={ShopPage}/>
+            
             <Route 
               exact={true}
               path='/signin'
               render={
                 () => this.props.currentUser ? (<Redirect to='/'/>) : (<SignInAndSignupPage/>)
-            }            
+              }            
             />
             <Route exact={true} path='/checkout' component={CheckoutPage}/>  
           </Switch>

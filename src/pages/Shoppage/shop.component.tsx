@@ -1,43 +1,38 @@
-import React, { Component } from 'react';
-import SHOP_DATA from './2.2 shop.data.js';
-import {PreviewCollection} from '../../components/preview-collection/preview-collection.component'
-interface ShopProp {
+import React from 'react';
+import {CollectionsOverView} from '../../components/Collections/collectionsOverview.component';
+import {Route, useRouteMatch, Switch} from 'react-router-dom';
+import {CollectionPage} from '../CollectionPage/CollectionPage.component';
 
-}
-
-interface ShopState {
-  collections: {
-    id: number,
-    title:string,
-    routeName:string;
-    items: {
-      id: number,
-      name:string,
-      imageUrl:string,
-      price:number
-    }[]
-  }[]
-}
-
-export class ShopPage extends Component<ShopProp,ShopState> {
-  constructor(props:ShopProp) {
-    super(props);
-
-    this.state = {
-      collections: SHOP_DATA,
-    }    
-  }  
-  
-  render() {
-    const {collections} = this.state;
-    return (<div className="shop-page">
-      {
-        collections.map(({id,...rest}) => 
-        <PreviewCollection 
-          key={id}
-          {...rest}
-        /> )
-      }
-    </div>)
+export const ShopPage:React.FC = () => {
+  let match = useRouteMatch();
+  console.log(match)
+  if (!match) {
+    return (
+      <div className="shop-page"/>        
+    )
   }
+  else {
+    const {path,url} = match;    
+    return (      
+      <div className="shop-page">        
+        <Switch>
+          <Route        
+            path={path}
+            exact={true}
+            component={CollectionsOverView}          
+          />           
+                  
+          <Route
+            path={`${path}/:collectionId`}
+            component={CollectionPage}                        
+          />                      
+             
+        </Switch>               
+      </div>      
+    )  
+  }  
 }
+  
+
+  
+ 
