@@ -3,12 +3,12 @@ import './collectionsOverview.styles.scss';
 import {PreviewCollection} from '../../components/preview-collection/preview-collection.component'
 import { connect, MapStateToProps } from 'react-redux';
 import { RootReducerState } from '../../redux/Statetypes/RootReducerState';
-import {Selectcollections} from '../../redux/shop/shop.selector';
-import {ShopProps,ShopState} from '../../redux/shop/shopInterface';
+import {Selectcollections,SelectcollectionsForPreview} from '../../redux/shop/shop.selector';
+import {ShopProps} from '../../redux/shop/shopInterface';
 
-const mapStateToProps:MapStateToProps<ShopState,any,RootReducerState> = (state:RootReducerState) => (
+const mapStateToProps:MapStateToProps<any,any,RootReducerState> = (state:RootReducerState) => (
   {
-    collections:Selectcollections(state)
+    collections:SelectcollectionsForPreview(state)
   }
 )
 

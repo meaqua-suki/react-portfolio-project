@@ -1,9 +1,10 @@
-export const SHOP_DATA = [
-  {
-    id: 1,
-    title: 'Hats',
-    routeName: 'hats',
-    items: [
+export const SHOP_DATA = {
+  hats:
+    {
+      id: 1,
+      title: 'Hats',
+      routeName: 'hats',
+      items: [
       {
         id: 1,
         name: 'Brown Brim',
@@ -60,11 +61,12 @@ export const SHOP_DATA = [
       }
     ]
   },
-  {
-    id: 2,
-    title: 'Sneakers',
-    routeName: 'sneakers',
-    items: [
+  sneakers:
+    {
+      id: 2,
+      title: 'Sneakers',
+      routeName: 'sneakers',
+      items: [
       {
         id: 10,
         name: 'Adidas NMD',
@@ -115,11 +117,12 @@ export const SHOP_DATA = [
       }
     ]
   },
-  {
-    id: 3,
-    title: 'Jackets',
-    routeName: 'jackets',
-    items: [
+  jackets:
+    {
+      id: 3,
+      title: 'Jackets',
+      routeName: 'jackets',
+      items: [
       {
         id: 18,
         name: 'Black Jean Shearling',
@@ -152,11 +155,12 @@ export const SHOP_DATA = [
       }
     ]
   },
-  {
-    id: 4,
-    title: 'Womens',
-    routeName: 'womens',
-    items: [
+  womens:
+    {
+      id: 4,
+      title: 'Womens',
+      routeName: 'womens',
+      items: [
       {
         id: 23,
         name: 'Blue Tanktop',
@@ -201,11 +205,12 @@ export const SHOP_DATA = [
       }
     ]
   },
-  {
-    id: 5,
-    title: 'Mens',
-    routeName: 'mens',
-    items: [
+  mens:
+    {
+      id: 5,
+      title: 'Mens',
+      routeName: 'mens',
+      items: [
       {
         id: 30,
         name: 'Camo Down Vest',
@@ -244,5 +249,6 @@ export const SHOP_DATA = [
       }
     ]
   }
-];
+}
+
 

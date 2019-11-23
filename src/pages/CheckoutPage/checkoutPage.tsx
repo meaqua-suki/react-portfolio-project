@@ -5,11 +5,14 @@ import { connect } from 'react-redux';
 import { RootReducerState } from '../../redux/Statetypes/RootReducerState';
 import { CartItems } from '../../redux/cart/cart-interfaces';
 import {CheckoutItem} from '../../components/check-out-item/checkout-item.componrnt';
+import StripeCheckoutButton from '../../components/stripe-button/stripe-button.component'
+
 
 interface CheckoutPageState {
   totalPrice:number;
   cartItems:CartItems;
 }
+
 
 const checkoutPage:React.FC<CheckoutPageState> =({totalPrice,cartItems}) => (
   <div className="checkout-page">
@@ -44,6 +47,14 @@ const checkoutPage:React.FC<CheckoutPageState> =({totalPrice,cartItems}) => (
     <div className="total">
       <span>TOTAL: $ {totalPrice}</span>
     </div>
+    <div className="test-warning">
+      *Please use test credit card!!!!
+      <br/>
+
+      4242 4242 4242 4242 -Exp:01/20 -CVV:123 (visa test)
+    </div>
+    <StripeCheckoutButton price={totalPrice}/>
+
   </div>
 )
 

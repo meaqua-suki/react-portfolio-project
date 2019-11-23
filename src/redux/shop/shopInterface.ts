@@ -16,9 +16,9 @@ export interface Collection {
 
 export type Collections = Collection[];
 
-export interface ShopState {
-  collections: Collections
-}
 
-export type ShopProps = ShopState
+
+export interface ShopProps {
+  collections:Collection[]
+}
 
