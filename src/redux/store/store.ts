@@ -3,7 +3,13 @@ import logger from 'redux-logger';
 import { persistStore, persistReducer } from 'redux-persist';
 import {persistedReducer} from '../root-reducer';
 
-const middlewares = [logger];
+const middlewares:Array<any> = [];
+
+
+if (process.env.NODE_ENV === "development") {
+  middlewares.push(logger)
+}
+
 
 export const store:Store = createStore(persistedReducer,applyMiddleware(...middlewares));
 export const Entirestate = store.getState();
