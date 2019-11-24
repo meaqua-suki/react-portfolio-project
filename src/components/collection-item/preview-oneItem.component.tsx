@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import './collection-item.styles.scss';
-import {CustomButton} from '../custom-button/custom-button.components';
 import {connect} from 'react-redux';
 import {addItem} from '../../redux/cart/cart-action-creator';
 import { Dispatch } from 'redux';
-
-
+import {CollectionItemContainer,Image,AddToCartButton,CollectionFooter,Name,Price} from './collection-item.styles'
 interface OneItemProp {  
   item:{
     id: number,
@@ -19,19 +16,18 @@ interface OneItemProp {
 const oneItem:React.FC<OneItemProp> = ({item,addItem}) => {
   const {id,name,imageUrl,price} = item
   return (
-    <div className="collection-item">
-      <div 
-        className="image"
+    <CollectionItemContainer>
+      <Image        
         style={
           {backgroundImage:`url(${imageUrl})`}
       }      
       />      
-        <div className="collection-footer">
-          <span className="name">{name}</span>
-          <span className="price">{price}</span>
-        </div>        
-        <CustomButton inverted={true} onClick={() => addItem(item)}>ADD TO CART</CustomButton>              
-    </div>
+        <CollectionFooter>
+          <Name>{name}</Name>
+          <Price>{price}</Price>
+        </CollectionFooter>        
+        <AddToCartButton  inverted={true} onClick={() => addItem(item)}>ADD TO CART</AddToCartButton>              
+    </CollectionItemContainer>
   )
 }
 

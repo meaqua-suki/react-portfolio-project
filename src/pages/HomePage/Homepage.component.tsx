@@ -1,6 +1,6 @@
 import React from 'react';
 import  MenuContainer  from '../../components/menu-container/MenuContainer';
-import './Homepage.scss';
+import {HomepageContainer} from './Homepage.styles';
 // import {
 //   BrowserRouter as Router,
 //   Switch,
@@ -8,7 +8,8 @@ import './Homepage.scss';
 //   Link
 // } from "react-router-dom";
 export const HomePage: React.FC = () => (
-  <div className="homepage">
+  <HomepageContainer>
     <MenuContainer/>
-  </div>
+  </HomepageContainer>
+  
 )

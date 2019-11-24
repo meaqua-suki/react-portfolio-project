@@ -1,7 +1,6 @@
 import React from 'react';
 import './header.styles.scss'; 
 import {Link} from 'react-router-dom';
-import {createStructuredSelector} from 'reselect'
 import {ReactComponent as Logo} from '../../assets/4.4 crown.svg.svg';
 import {auth} from '../../firebase/firebase.utils';
 import {connect} from 'react-redux'
@@ -9,42 +8,43 @@ import {RootReducerState} from '../../redux/Statetypes/RootReducerState'
 import {CartIcon} from '../cart-icon/cart-icon';
 import {Cart} from '../cart-dropdown/cart-dropdown.component';
 import {currentUserSelector} from '../../redux/user/user.selectors';
-import {selectCartHidden} from '../../redux/cart/cart.selectors'
+import {selectCartHidden} from '../../redux/cart/cart.selectors';
+import {OptionDiv,HeaderContainer,Optionscontainer,OptionLink,LogoContainer} from './header.styles'
 interface HeaderProps {
   currentUser?:object | null;
   hidden?:boolean;  
 }
 
 const header:React.FC<HeaderProps> = ({currentUser,hidden}) => (
-  <div className="header">
-    <Link to='/' className="logo-container">
+  <HeaderContainer className="header">
+    <LogoContainer to='/'>
       <Logo className="logo"/>
-    </Link>
+    </LogoContainer>
     
-    <div className="options">
-      <Link to="/shop" className="option">
+    <Optionscontainer>
+      <OptionLink to="/shop">
         SHOP
-      </Link>      
-      <Link to="/contact" className="option">
+      </OptionLink>      
+      <OptionLink to="/contact">
         CONTACT
-      </Link>
+      </OptionLink>
       
       {
         currentUser ? 
         (
-          <div
+          <OptionDiv 
             className="option" 
             onClick={() => auth.signOut()}
           >
             SIGN OUT
-          </div>
+          </OptionDiv>
         )
        :        
-       <Link className="option" to="/signin">SIGN IN</Link>
+       <OptionLink to="/signin">SIGN IN</OptionLink>
       }
 
-      <CartIcon/>      
-    </div>
+      <CartIcon/>
+    </Optionscontainer>
     
     {
       (!hidden) ?
@@ -52,7 +52,7 @@ const header:React.FC<HeaderProps> = ({currentUser,hidden}) => (
         null
     }
 
-  </div>
+  </HeaderContainer>
 )
  
 const mapStateToProps = (state:RootReducerState) => ({
