@@ -14,16 +14,14 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// var db = firebase.firestore();
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 export const createUserProfileDocument = async (userAuth,additionalData) => {
-  // if (!userAuth)  return;  
+  
   const userRef = firestore.doc(`/users/${userAuth.uid}`);
-  const snapShot = await userRef.get();
-  // console.log(snapShot);
+  const snapShot = await userRef.get();  
 
   if (!snapShot.exists) {
     const {displayName,email} = userAuth;
@@ -45,11 +43,37 @@ export const createUserProfileDocument = async (userAuth,additionalData) => {
   return userRef;
 }
 
+export const addCollectionAndDocuments = async (collectionKey,objectsToadd) => {
+  const collectionRef = firestore.collection(collectionKey);
+  const batch = firestore.batch();
+  objectsToadd.forEach((obj) => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef,obj)
+  })
+
+  return batch.commit();
+}
+
+export const convertCollectionsSnapshotToMap = (collectionsSnapShot) => {
+  const transferedcollections = collectionsSnapShot.docs.map((doc) => {
+    const {title,items} = doc.data();
+    return {
+      routeName:encodeURI(title.toLowerCase()),
+      id:doc.id,
+      items,
+      title
+    }
+  })
+
+  return transferedcollections.reduce((accumulator,collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  },{})
+}
 
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters( {prompt: 'select_account'} );
-export const signInwithGoogle = () => {
-  // console.log("test1")
+export const signInwithGoogle = () => {  
   return auth.signInWithPopup(provider);
 }
 export default firebase;

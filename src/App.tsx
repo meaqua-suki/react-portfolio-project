@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import {currentUserSelector} from './redux/user/user.selectors'
+import {SelectcollectionsForPreview} from './redux/shop/shop.selector';
+
 import './App.css';
 import {HomePage} from './pages/HomePage/Homepage.component';
 import {HatsPage} from './pages/HatsPage/HatsPage.component';
@@ -17,7 +19,7 @@ import {
 
 
 import { User } from 'firebase';
-import {auth, createUserProfileDocument} from './firebase/firebase.utils';
+import {auth, createUserProfileDocument,addCollectionAndDocuments} from './firebase/firebase.utils';
 
 
 import {Header} from './components/header/header.component';
@@ -29,10 +31,12 @@ import { Dispatch } from 'redux';
 
 import {setCurrentUser} from './redux/user/user.actions-creator';
 import { RootReducerState } from './redux/Statetypes/RootReducerState';
+import { Collections } from './redux/shop/shopInterface';
 
 
 interface AppMapStateToProps {
-  currentUser:User | object |null
+  currentUser:User | object |null,
+  
 }
 
 interface AppMapDispatchToProps {
@@ -64,6 +68,7 @@ class App extends Component<AppProps,any> {
         setCurrentUser(userAuth)
       }              
     })
+
   }
   componentWillUnmount() {
     this.unsubscribeFromAuth();
@@ -93,12 +98,13 @@ class App extends Component<AppProps,any> {
 }
 
 const mapStatetoProps = (state:RootReducerState) => ({
-  currentUser:currentUserSelector(state)
+  currentUser:currentUserSelector(state),
+  collectionsArray:SelectcollectionsForPreview(state)
 })
 
 const mapDispatchToProps = (dispatch:Dispatch) => (
   {
-    setCurrentUser:(user:User) => dispatch(setCurrentUser(user))
+    setCurrentUser:(user:User) => dispatch(setCurrentUser(user)),    
   }
 )
 
