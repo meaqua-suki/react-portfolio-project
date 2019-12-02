@@ -2,7 +2,9 @@ import React, { Component, FormEvent, ChangeEvent } from 'react';
 import './sign-in.styles.scss';
 import {FormInput} from '../../components/form-input/form-input.component';
 import {CustomButton} from '../../components/custom-button/custom-button.components'
-import {signInwithGoogle,auth} from '../../firebase/firebase.utils.js';
+import {auth} from '../../firebase/firebase.utils.js';
+import { connect } from 'react-redux';
+import { googleSignInStart,emailSignInStart } from '../../redux/user/user.actions-creator';
 
 interface SignInProps {
 
@@ -12,7 +14,7 @@ interface SignInState {
   password?:any;
 }
 
-export class SignIn extends Component<SignInProps,SignInState> {
+export class signIn extends Component<any,SignInState> {
   constructor(props:SignInProps) {
     super(props);
     this.state = {
@@ -23,17 +25,9 @@ export class SignIn extends Component<SignInProps,SignInState> {
 
   handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const {emailSignInStart} = this.props;
     const {email,password} = this.state;
-    try {
-      await auth.signInWithEmailAndPassword(email,password);
-      this.setState({
-        email:'',
-        password:''
-      })      
-    } catch (error) {
-      console.log(error)
-    }    
-
+    emailSignInStart(email,password)
   }
 
   handleChange =(e:FormEvent<HTMLInputElement>) => {
@@ -46,6 +40,8 @@ export class SignIn extends Component<SignInProps,SignInState> {
   }
 
   render() {
+    const {signInwithGoogle} = this.props
+
     return (
       <div className="sign-in">
         <h2>Already have account</h2>
@@ -70,10 +66,8 @@ export class SignIn extends Component<SignInProps,SignInState> {
         
         <div className="buttons">
           <CustomButton type='submit' isGoogleSignin={false}>Sign in</CustomButton>
-          <CustomButton onClick={signInwithGoogle} isGoogleSignin={true}>
-            
-            Sign in with Google
-            
+          <CustomButton type='button' onClick={signInwithGoogle} isGoogleSignin={true}>            
+            GoogLe Sign In            
           </CustomButton>
         </div>
       </form>
@@ -81,3 +75,9 @@ export class SignIn extends Component<SignInProps,SignInState> {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch:any) => ({
+  signInwithGoogle: () => dispatch(googleSignInStart()),
+  emailSignInStart:(email:string,password:string) => dispatch(emailSignInStart({email,password}))  
+})
+export const SignIn = connect(null,mapDispatchToProps)(signIn);

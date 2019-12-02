@@ -24,3 +24,14 @@ export const Selectcollection = (collectionUrlParam:any) =>
   (collectionsMap) => 
     collectionsMap ? collectionsMap[collectionUrlParam] : null
  )
+
+
+ export const selectIsCollectionFetching = createSelector(
+    [ShopSelector],
+    shop => shop.isFetching
+ )
+
+ export const selectIsCollectionLoaded = createSelector(
+   [ShopSelector],
+   shop => !!(shop.collections)
+ )

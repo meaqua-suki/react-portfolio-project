@@ -1,14 +1,13 @@
 import React,{Component} from 'react';
 import {currentUserSelector} from './redux/user/user.selectors'
 import {SelectcollectionsForPreview} from './redux/shop/shop.selector';
-
 import './App.css';
+
+
 import {HomePage} from './pages/HomePage/Homepage.component';
-import {HatsPage} from './pages/HatsPage/HatsPage.component';
 import {ShopPage} from './pages/Shoppage/shop.component';
 import {SignInAndSignupPage} from './pages/sign-in-and-sign-up/sign-in-and-sign-up';
-import {CheckoutPage} from './pages/CheckoutPage/checkoutPage'
-
+import {CheckoutPage} from './pages/CheckoutPage/checkoutPage';
 
 import {
   BrowserRouter as Router,
@@ -16,22 +15,13 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
-
-
 import { User } from 'firebase';
-import {auth, createUserProfileDocument,addCollectionAndDocuments} from './firebase/firebase.utils';
-
 
 import {Header} from './components/header/header.component';
 
-
 import {connect} from 'react-redux';
-import { Dispatch } from 'redux';
 
-
-import {setCurrentUser} from './redux/user/user.actions-creator';
 import { RootReducerState } from './redux/Statetypes/RootReducerState';
-import { Collections } from './redux/shop/shopInterface';
 
 
 interface AppMapStateToProps {
@@ -39,35 +29,11 @@ interface AppMapStateToProps {
   
 }
 
-interface AppMapDispatchToProps {
-  setCurrentUser:(user:any) => {
-    type:string,
-    payload:User
-  }
-}
-
-type AppProps = AppMapStateToProps & AppMapDispatchToProps;
-
-
+type AppProps = AppMapStateToProps;
 
 class App extends Component<AppProps,any> {   
   unsubscribeFromAuth:any = null;
-  componentDidMount() {
-    const {setCurrentUser} = this.props      
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {    
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-        userRef.onSnapshot((snapShot) => {         
-          setCurrentUser({
-            id:snapShot.id,
-            ...snapShot.data()
-          })
-        });        
-      }
-      else {        
-        setCurrentUser(userAuth)
-      }              
-    })
+  componentDidMount() {  
 
   }
   componentWillUnmount() {
@@ -102,10 +68,4 @@ const mapStatetoProps = (state:RootReducerState) => ({
   collectionsArray:SelectcollectionsForPreview(state)
 })
 
-const mapDispatchToProps = (dispatch:Dispatch) => (
-  {
-    setCurrentUser:(user:User) => dispatch(setCurrentUser(user)),    
-  }
-)
-
-export default connect(mapStatetoProps,mapDispatchToProps)(App);
+export default connect(mapStatetoProps)(App);
