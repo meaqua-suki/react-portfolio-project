@@ -34,6 +34,11 @@ export const cartReducer:Reducer = (prevState:cartState = INITIAL_STATE,action:c
         ...prevState,
         cartItems:IncreaseItemQuantity(prevState.cartItems,action.payload)
       }
+    case cartActionTypes.CLEAR_CART_SUCCESS:
+      return {
+        ...prevState,
+        cartItems:[]
+      }
     default:
       return prevState
   }

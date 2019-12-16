@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React,{Component,useEffect} from 'react';
 import {currentUserSelector} from './redux/user/user.selectors'
 import {SelectcollectionsForPreview} from './redux/shop/shop.selector';
 import './App.css';
@@ -22,50 +22,57 @@ import {Header} from './components/header/header.component';
 import {connect} from 'react-redux';
 
 import { RootReducerState } from './redux/Statetypes/RootReducerState';
+import { checkUserSession } from './redux/user/user.actions-creator';
+import { Dispatch } from 'redux';
 
 
 interface AppMapStateToProps {
-  currentUser:User | object |null,
-  
+  currentUser:User | object |null,  
 }
 
 type AppProps = AppMapStateToProps;
 
-class App extends Component<AppProps,any> {   
-  unsubscribeFromAuth:any = null;
-  componentDidMount() {  
+const App:React.FC<any> = ({checkUserSession,currentUser}) => {   
+  let unsubscribeFromAuth:any = null;
 
-  }
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-  render() {
-    return (
-      <div className="App">        
-        <Router>
-          <Header/>
-          <Switch>
-            <Route exact={true} path="/" component={HomePage}/>
-            <Route path='/shop' component={ShopPage}/>
-            
-            <Route 
-              exact={true}
-              path='/signin'
-              render={
-                () => this.props.currentUser ? (<Redirect to='/'/>) : (<SignInAndSignupPage/>)
-              }            
-            />
-            <Route exact={true} path='/checkout' component={CheckoutPage}/>  
-          </Switch>
-        </Router>
-      </div>      
-    )
-  }
+  useEffect(() => {
+    checkUserSession();
+    
+    return () => {
+      unsubscribeFromAuth()
+    };
+  }, [checkUserSession])   
+
+  return (
+    <div className="App">        
+      <Router>
+        <Header/>
+        <Switch>
+          <Route exact={true} path="/" component={HomePage}/>
+          <Route path='/shop' component={ShopPage}/>
+          
+          <Route 
+            exact={true}
+            path='/signin'
+            render={
+              () => currentUser ? (<Redirect to='/'/>) : (<SignInAndSignupPage/>)
+            }            
+          />
+          <Route exact={true} path='/checkout' component={CheckoutPage}/>  
+        </Switch>
+      </Router>
+    </div>      
+  )
 }
+
 
 const mapStatetoProps = (state:RootReducerState) => ({
   currentUser:currentUserSelector(state),
   collectionsArray:SelectcollectionsForPreview(state)
 })
 
-export default connect(mapStatetoProps)(App);
+const mapDispatchToProps = (dispatch:Dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSession())
+})
+
+export default connect(mapStatetoProps,mapDispatchToProps)(App);
